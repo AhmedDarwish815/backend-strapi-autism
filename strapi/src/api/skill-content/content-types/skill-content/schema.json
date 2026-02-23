@@ -1,0 +1,55 @@
+{
+    "kind": "collectionType",
+    "collectionName": "skill_contents",
+    "info": {
+        "singularName": "skill-content",
+        "pluralName": "skill-contents",
+        "displayName": "Skill Content",
+        "description": "محتوى تعليمي مرتبط بالمهارات"
+    },
+    "options": {
+        "draftAndPublish": true
+    },
+    "pluginOptions": {},
+    "attributes": {
+        "type": {
+            "type": "enumeration",
+            "enum": [
+                "IMAGE",
+                "AUDIO",
+                "VIDEO",
+                "TEXT"
+            ],
+            "required": true
+        },
+        "url": {
+            "type": "string"
+        },
+        "media": {
+            "type": "media",
+            "multiple": false,
+            "required": false,
+            "allowedTypes": [
+                "images",
+                "audios",
+                "videos"
+            ]
+        },
+        "text": {
+            "type": "text"
+        },
+        "title": {
+            "type": "string"
+        },
+        "sortOrder": {
+            "type": "integer",
+            "default": 0
+        },
+        "skill_item": {
+            "type": "relation",
+            "relation": "manyToOne",
+            "target": "api::skill-item.skill-item",
+            "inversedBy": "skill_contents"
+        }
+    }
+}

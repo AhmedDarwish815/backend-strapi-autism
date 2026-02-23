@@ -1,0 +1,74 @@
+services:
+  db:
+    image: postgres:15-alpine
+    restart: always
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: ${POSTGRES_DB}
+    ports:
+      - "5433:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    restart: always
+    ports:
+      - "4001:4000"
+    environment:
+      PORT: "4000"
+      DATABASE_URL: ${DATABASE_URL}
+      JWT_ACCESS_SECRET: ${JWT_ACCESS_SECRET}
+      JWT_REFRESH_SECRET: ${JWT_REFRESH_SECRET}
+      ACCESS_TOKEN_EXPIRES_IN: ${ACCESS_TOKEN_EXPIRES_IN}
+      REFRESH_TOKEN_EXPIRES_IN: ${REFRESH_TOKEN_EXPIRES_IN}
+      MAILTRAP_USER: ${MAILTRAP_USER}
+      MAILTRAP_PASS: ${MAILTRAP_PASS}
+      APP_URL: ${APP_URL}
+      GROQ_API_KEY: ${GROQ_API_KEY}
+      AI_API_URL: "http://ai:5000/predict"
+    depends_on:
+      - db
+      - ai
+
+  ai:
+    build:
+      context: ./AI
+      dockerfile: Dockerfile
+    restart: always
+    ports:
+      - "5001:5000"
+
+  strapi:
+    build:
+      context: ./strapi
+      dockerfile: Dockerfile
+    restart: always
+    ports:
+      - "1338:1337"
+    environment:
+      HOST: "0.0.0.0"
+      PORT: "1337"
+      DATABASE_CLIENT: postgres
+      DATABASE_HOST: db
+      DATABASE_PORT: "5432"
+      DATABASE_NAME: ${POSTGRES_DB}
+      DATABASE_USERNAME: ${POSTGRES_USER}
+      DATABASE_PASSWORD: ${POSTGRES_PASSWORD}
+      DATABASE_SCHEMA: strapi
+      APP_KEYS: ${STRAPI_APP_KEYS:-toBeModified1,toBeModified2,toBeModified3,toBeModified4}
+      API_TOKEN_SALT: ${STRAPI_API_TOKEN_SALT:-toBeModified}
+      ADMIN_JWT_SECRET: ${STRAPI_ADMIN_JWT_SECRET:-toBeModified}
+      TRANSFER_TOKEN_SALT: ${STRAPI_TRANSFER_TOKEN_SALT:-toBeModified}
+      JWT_SECRET: ${STRAPI_JWT_SECRET:-toBeModified}
+    depends_on:
+      - db
+    volumes:
+      - strapi_uploads:/opt/strapi/public/uploads
+
+volumes:
+  postgres_data:
+  strapi_uploads:

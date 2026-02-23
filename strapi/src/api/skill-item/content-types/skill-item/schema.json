@@ -1,0 +1,87 @@
+{
+    "kind": "collectionType",
+    "collectionName": "skill_items",
+    "info": {
+        "singularName": "skill-item",
+        "pluralName": "skill-items",
+        "displayName": "Skill Item",
+        "description": "مهارات تعليمية للأطفال - Skills for autism learning"
+    },
+    "options": {
+        "draftAndPublish": true
+    },
+    "pluginOptions": {},
+    "attributes": {
+        "category": {
+            "type": "enumeration",
+            "enum": [
+                "COOKING",
+                "MUSIC",
+                "MATH",
+                "SONGS",
+                "SPORTS",
+                "DRAWING",
+                "COMPUTER",
+                "SCIENCE",
+                "STORIES"
+            ],
+            "required": true
+        },
+        "title": {
+            "type": "string",
+            "required": true
+        },
+        "description": {
+            "type": "text"
+        },
+        "imageUrl": {
+            "type": "string"
+        },
+        "image": {
+            "type": "media",
+            "multiple": false,
+            "required": false,
+            "allowedTypes": [
+                "images"
+            ]
+        },
+        "difficulty": {
+            "type": "enumeration",
+            "enum": [
+                "EASY",
+                "MEDIUM",
+                "HARD"
+            ],
+            "default": "EASY",
+            "required": true
+        },
+        "ageMin": {
+            "type": "integer",
+            "default": 3
+        },
+        "ageMax": {
+            "type": "integer",
+            "default": 12
+        },
+        "sortOrder": {
+            "type": "integer",
+            "default": 0
+        },
+        "isActive": {
+            "type": "boolean",
+            "default": true
+        },
+        "skill_contents": {
+            "type": "relation",
+            "relation": "oneToMany",
+            "target": "api::skill-content.skill-content",
+            "mappedBy": "skill_item"
+        },
+        "skill_quizzes": {
+            "type": "relation",
+            "relation": "oneToMany",
+            "target": "api::skill-quiz.skill-quiz",
+            "mappedBy": "skill_item"
+        }
+    }
+}

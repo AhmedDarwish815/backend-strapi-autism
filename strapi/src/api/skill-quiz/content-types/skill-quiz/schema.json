@@ -1,0 +1,67 @@
+{
+    "kind": "collectionType",
+    "collectionName": "skill_quizzes",
+    "info": {
+        "singularName": "skill-quiz",
+        "pluralName": "skill-quizzes",
+        "displayName": "Skill Quiz",
+        "description": "كويزات مرتبطة بالمهارات"
+    },
+    "options": {
+        "draftAndPublish": true
+    },
+    "pluginOptions": {},
+    "attributes": {
+        "type": {
+            "type": "enumeration",
+            "enum": [
+                "MULTIPLE_CHOICE",
+                "TRUE_FALSE",
+                "MATCH"
+            ],
+            "required": true
+        },
+        "question": {
+            "type": "text",
+            "required": true
+        },
+        "imageUrl": {
+            "type": "string"
+        },
+        "image": {
+            "type": "media",
+            "multiple": false,
+            "required": false,
+            "allowedTypes": [
+                "images"
+            ]
+        },
+        "audioUrl": {
+            "type": "string"
+        },
+        "audio": {
+            "type": "media",
+            "multiple": false,
+            "required": false,
+            "allowedTypes": [
+                "audios"
+            ]
+        },
+        "sortOrder": {
+            "type": "integer",
+            "default": 0
+        },
+        "skill_item": {
+            "type": "relation",
+            "relation": "manyToOne",
+            "target": "api::skill-item.skill-item",
+            "inversedBy": "skill_quizzes"
+        },
+        "quiz_options": {
+            "type": "relation",
+            "relation": "oneToMany",
+            "target": "api::quiz-option.quiz-option",
+            "mappedBy": "skill_quiz"
+        }
+    }
+}

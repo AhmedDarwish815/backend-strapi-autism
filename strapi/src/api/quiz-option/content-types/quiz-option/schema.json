@@ -1,0 +1,45 @@
+{
+    "kind": "collectionType",
+    "collectionName": "quiz_options",
+    "info": {
+        "singularName": "quiz-option",
+        "pluralName": "quiz-options",
+        "displayName": "Quiz Option",
+        "description": "خيارات الكويز"
+    },
+    "options": {
+        "draftAndPublish": true
+    },
+    "pluginOptions": {},
+    "attributes": {
+        "text": {
+            "type": "string",
+            "required": true
+        },
+        "imageUrl": {
+            "type": "string"
+        },
+        "image": {
+            "type": "media",
+            "multiple": false,
+            "required": false,
+            "allowedTypes": [
+                "images"
+            ]
+        },
+        "isCorrect": {
+            "type": "boolean",
+            "default": false
+        },
+        "sortOrder": {
+            "type": "integer",
+            "default": 0
+        },
+        "skill_quiz": {
+            "type": "relation",
+            "relation": "manyToOne",
+            "target": "api::skill-quiz.skill-quiz",
+            "inversedBy": "quiz_options"
+        }
+    }
+}
