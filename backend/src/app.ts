@@ -17,6 +17,7 @@ import rewardsRoutes from "./modules/rewards/rewards.routes";
 import gamesRoutes from "./modules/games/games.routes";
 import progressRoutes from "./modules/progress/progress.routes";
 import articlesRoutes from "./modules/articles/articles.routes";
+import skillsRoutes from "./modules/skills/skills.routes";
 
 export const app = express();
 
@@ -57,6 +58,7 @@ app.use("/rewards", rewardsRoutes);
 app.use("/games", gamesRoutes);
 app.use("/progress", progressRoutes);
 app.use("/articles", articlesRoutes);
+app.use("/skills", skillsRoutes);
 app.use(globalErrorHandler);
 
 export default app;
