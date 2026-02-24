@@ -86,14 +86,20 @@ export const getItemById = async (itemId: string) => {
 };
 
 export const logSkill = async (childId: string, itemId: string, scoreParam?: number, timeSpentParam?: number, completedParam?: boolean) => {
-    const item = await prisma.skillItem.findUnique({
+    // Since skills are managed in Strapi, the itemId here is actually the Strapi documentId.
+    // To satisfy Prisma's foreign key constraint on SkillLog and SkillProgress, 
+    // we upsert a dummy SkillItem in our local DB if it doesn't exist yet.
+    await prisma.skillItem.upsert({
         where: { id: itemId },
-        select: { id: true, category: true, difficulty: true },
+        create: {
+            id: itemId,
+            category: "SONGS", // Default placeholder
+            title: "Strapi Skill Item",
+            difficulty: "EASY",
+            isActive: true
+        },
+        update: {}
     });
-
-    if (!item) {
-        throw Object.assign(new Error("Item not found"), { status: 404 });
-    }
 
     const completed = completedParam ?? true;
 
@@ -116,7 +122,7 @@ export const logSkill = async (childId: string, itemId: string, scoreParam?: num
         create: {
             childId,
             skillItemId: itemId,
-            level: item.difficulty,
+            level: "EASY",
             score: scoreParam || 0,
             bestScore: scoreParam || 0,
             attempts: 1,
